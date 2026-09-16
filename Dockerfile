@@ -1,17 +1,15 @@
-FROM python:3.12-slim
+FROM node:20-slim
 
 WORKDIR /app
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        curl \
-        ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash openssl curl iproute2 coreutils && \
+    rm -rf /var/lib/apt/lists/* 
 
 COPY . .
+RUN chmod +x main
 
+ENV PORT=3000
 EXPOSE 3000
 
-# RUN chmod -R 777 /app
-
-CMD ["python", "app.py"]
+CMD ["./main"]
